@@ -1,5 +1,6 @@
 package com.example.dividendstock.service;
 
+import com.example.dividendstock.exception.impl.AlreadyExistUserException;
 import com.example.dividendstock.model.Auth;
 import com.example.dividendstock.model.MemberEntity;
 import com.example.dividendstock.persist.MemberRepository;
@@ -34,17 +35,24 @@ public class MemberService implements UserDetailsService {
                                 .existsByUsername(member.getUsername());
 
         if(exists){
-            throw new RuntimeException("해당 아이디가 사용 중 입니다.");
+            throw new AlreadyExistUserException();
         }
 
         member.setPassword(this.passwordEncoder.encode(member.getPassword()));
-        MemberEntity result = this.memberRepository.save(member.toEntity());
-        return result;
+        return this.memberRepository.save(member.toEntity());
 
     }
 
-    //로그인 할 때 검증 위한
+    //로그인 할 때 검증 위한 - password 인증
     public MemberEntity authenticate(Auth.SignIn member ) {
-        return null;
+        MemberEntity user = this.memberRepository.findByUsername(member.getUsername())
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 ID 입니다."));
+        // user 에 들어있는 password 는 인코딩한 값 (참고)
+
+        if (!this.passwordEncoder.matches(member.getPassword(), user.getPassword())) {
+            throw new RuntimeException("비밀번호가 일치하지 않습니다");
+        }
+
+        return user;
     }
 }

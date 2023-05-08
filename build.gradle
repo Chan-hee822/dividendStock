@@ -26,8 +26,11 @@ dependencies {
 
     implementation group: 'com.h2database', name: 'h2', version: '1.4.200'
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.7.2'
-    implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
     implementation 'org.apache.commons:commons-collections4:4.4'
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

@@ -1,5 +1,6 @@
 package com.example.dividendstock.service;
 
+import com.example.dividendstock.exception.impl.NoCompanyException;
 import com.example.dividendstock.model.Company;
 import com.example.dividendstock.model.ScrapedResult;
 import com.example.dividendstock.persist.CompanyRepository;
@@ -88,6 +89,17 @@ public class CompanyService {
 	// 트라이에 저장한 단어 삭제
 	public void deleteAutocompleteKeyword(String keyword) {
 		this.trie.remove(keyword);
+	}
+
+	public String deleteCompany(String ticker) {
+		CompanyEntity company = this.companyRepository.findByTicker(ticker)
+				.orElseThrow(() -> new NoCompanyException());
+
+		this.dividendRepository.deleteAllByCompanyId(company.getId());
+		this.companyRepository.delete(company);
+
+		this.deleteAutocompleteKeyword(company.getName());
+		return company.getName();
 	}
 
 }
