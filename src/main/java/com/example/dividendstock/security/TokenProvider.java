@@ -31,7 +31,6 @@ public class TokenProvider {
     @Value("${spring.jwt.secret}")
     private  String secretKey;
 
-    //private Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     private Key getSigninKey(String secretKey) {
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
@@ -86,7 +85,7 @@ public class TokenProvider {
 //                    .parseClaimsJws(token)
 //                    .getBody();
             return Jwts.parserBuilder()
-                    .setSigningKey(this.secretKey)
+                    .setSigningKey(this.secretKey.getBytes())
                     .build()
                     .parseClaimsJws(token)
                     .getBody();

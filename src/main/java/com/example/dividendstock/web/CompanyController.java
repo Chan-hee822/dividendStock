@@ -28,7 +28,7 @@ public class CompanyController {
 	}
 
 	@GetMapping
-//	@PreAuthorize("hasRole('ROLE_READ')")
+	@PreAuthorize("hasRole('READ')")
 	public ResponseEntity<?> searchCompany(final Pageable pageable) {
 		Page<CompanyEntity> companies = this.companyService.getAllCompany(pageable);
 		return ResponseEntity.ok(companies);
@@ -39,7 +39,7 @@ public class CompanyController {
 	 *
 	 */
 	@PostMapping
-//	@PreAuthorize("hasRole('WRITE')")	// 쓰기 권한 있는 유저만 호출 가능
+	@PreAuthorize("hasRole('WRITE')")	// 쓰기 권한 있는 유저만 호출 가능
 	public ResponseEntity<?> addCompany(@RequestBody Company request) {
 		String ticker = request.getTicker().trim();
 		if (ObjectUtils.isEmpty(ticker)) {

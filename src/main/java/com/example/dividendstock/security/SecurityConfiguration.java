@@ -34,7 +34,8 @@ public class SecurityConfiguration {
                 //권한 제어 부분(실제 API 관련)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/**/signup", "/**/signin").permitAll()
+                .antMatchers("/**/signup"
+                            , "/**/signin").permitAll()
                 .and()
                 .addFilterBefore(this.authenticationFilter
                         , UsernamePasswordAuthenticationFilter.class);

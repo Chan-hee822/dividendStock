@@ -19,7 +19,7 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    public static final String TOKEN_HEADER = " Authorization";
+    public static final String TOKEN_HEADER = "Authorization";
         // 토큰같은 경우 http 프로토콜 헤더에 포함되어있음, 어떤 키 키준으로 토큰을 주고 받을지 대한 키 설정
     public static final String TOKEN_PREFIX = "Bearer ";
         // 인증 타입을 나타낼 때 사용
@@ -39,9 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Authentication auth = this.tokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(auth);
 
-            log.info(String.format("[%s] -> %s")
-                    , this.tokenProvider.getUsername(token)
-                    , request.getRequestURI());
+            log.info("[%s] -> %s", this.tokenProvider.getUsername(token), request.getRequestURI());
         }
 
         filterChain.doFilter(request, response);
